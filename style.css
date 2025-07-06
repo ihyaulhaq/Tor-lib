@@ -1,5 +1,5 @@
-body{
-  display: flex;
+body {
+  display: grid;
   justify-content: center;
 }
 .tg {
@@ -39,4 +39,30 @@ body{
 .tg .tg-0lax {
   text-align: left;
   vertical-align: top;
+}
+
+.new-book-btn {
+  margin-top: 40px;
+  width: 50%;
+  height: 3vh;
+
+  justify-self: center;
+}
+
+dialog {
+
+  border: none !important;
+  border-radius: calc(5px * 3.75);
+  box-shadow: 0 0 #0000, 0 0 #0000, 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 1.6rem;
+}
+
+.form-dialog {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+span{
+  color: red;
 }
