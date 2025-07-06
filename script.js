@@ -11,19 +11,24 @@ function Book(title, author, pages, status) {
 Book.prototype.info = function () {
   return (
     `${this.title} by ${this.author}, ${this.pages} pages, ` +
-    (this.status ? "readed" : "not read yet")
+    (this.status ? "readed" : "not read yet") +
+    this.id
   );
+};
+
+Book.prototype.changeStatus = function (id) {
+  this.status = !this.status;
 };
 
 function addBookToLibrary(title, author, pages, status) {
   const newBook = new Book(title, author, pages, status);
-
   myLibrary.push(newBook);
 }
 
 const tablebody = document.getElementById("book-table-body");
 
 function displayBook() {
+  tablebody.innerHTML = "";
   myLibrary.forEach((book) => {
     const row = document.createElement("tr");
 
@@ -49,8 +54,32 @@ function displayBook() {
     statusCell.textContent = readStatus;
     row.appendChild(statusCell);
 
+    const deleteCell = document.createElement("td");
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.classList.add("delete-book-btn");
+    deleteButton.setAttribute("data-id", book.id);
+    deleteCell.appendChild(deleteButton);
+    row.appendChild(deleteCell);
+
+    const changeStatusCell = document.createElement("td");
+    const changeStatusButton = document.createElement("button");
+    changeStatusButton.textContent = "Change";
+    changeStatusButton.classList.add("change-status-btn");
+    changeStatusButton.setAttribute("data-id", book.id);
+    changeStatusCell.appendChild(changeStatusButton);
+    row.appendChild(changeStatusCell);
     tablebody.appendChild(row);
   });
+}
+
+function deleteBook(id) {
+  const index = myLibrary.findIndex((book) => book.id === id);
+
+  if (index !== -1) {
+    myLibrary.splice(index, 1);
+    displayBook();
+  }
 }
 
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, true);
@@ -59,21 +88,85 @@ addBookToLibrary("Pride and Prejudice", "Jane Austen", 279, false);
 addBookToLibrary("1984", "George Orwell", 328, true);
 addBookToLibrary("To Kill a Mockingbird", "Harper Lee", 281, false);
 
-document.addEventListener("DOMContentLoaded", displayBook);
+document.addEventListener("DOMContentLoaded", () => {
+  displayBook();
 
-const dialog = document.querySelector("dialog");
-const showButton = document.querySelector("dialog + button");
-const closeButton = document.querySelector("dialog button");
-const submitBtn = document.querySelector("#submit-button");
+  tablebody.addEventListener("click", (event) => {
+    if (event.target.classList.contains("delete-book-btn")) {
+      const bookIdToDelete = event.target.getAttribute("data-id");
+      if (bookIdToDelete) {
+        deleteBook(bookIdToDelete);
+      }
+    }
+    if (event.target.classList.contains("change-status-btn")) {
+      const bookIdToSwitch = event.target.getAttribute("data-id");
+      if (bookIdToSwitch) {
+        const bookToToggle = myLibrary.find(
+          (book) => book.id === bookIdToSwitch
+        );
+        if (bookToToggle) {
+          bookToToggle.changeStatus();
+          displayBook();
+        }
+      }
+    }
+  });
+});
+
+const dialog = document.getElementById("bookDialog");
+const showButton = document.getElementById("new-book-btn");
+const closeButton = document.getElementById("cancel-btn");
+const submitBtn = document.getElementById("sumbit-btn");
 
 const output = document.querySelector("output");
 
-// "Show the dialog" button opens the dialog modally
+const bookTitle = document.querySelector("#book-title");
+const bookAuthor = document.querySelector("#book-author");
+const pagesNum = document.querySelector("#pages-number");
+
 showButton.addEventListener("click", () => {
   dialog.showModal();
 });
 
+closeButton.addEventListener("click", () => {
+  dialog.close();
+});
 
-dialog.addEventListener("close", (e)=>{
-  output.value ="dqwvac"
-})
+dialog.addEventListener("close", () => {
+  if (dialog.returnValue === "submitted") {
+    const title = bookTitle.value;
+    const author = bookAuthor.value;
+    const pages = parseInt(pagesNum.value, 10);
+    const status =
+      document.querySelector('input[name="status"]:checked').value === "true";
+
+    if (title && author && !isNaN(pages)) {
+      addBookToLibrary(title, author, pages, status);
+      displayBook();
+      output.textContent = `Book Added:\nTitle: ${title}\nAuthor: ${author}\nPages: ${pages}\nStatus: ${
+        status ? "Read" : "Unread"
+      }`;
+    } else {
+      output.textContent = "Please fill in all required fields.";
+    }
+  } else {
+    output.textContent = "";
+  }
+  dialog.querySelector("form").reset();
+});
+
+submitBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  if (
+    bookTitle.checkValidity() &&
+    bookAuthor.checkValidity() &&
+    pagesNum.checkValidity()
+  ) {
+    dialog.close("submitted");
+  } else {
+    console.log("Form is not valid, dialog remains open.");
+  }
+});
+
+const book = document.querySelectorAll("[]");

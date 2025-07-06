@@ -1,46 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <table class="tg">
-      <thead>
-        <tr>
-          <th class="tg-baqh">Title</th>
-          <th class="tg-0lax">author</th>
-          <th class="tg-0lax">Pages</th>
-          <th class="tg-0lax">Status</th>
-        </tr>
-      </thead>
-      <tbody id="book-table-body"></tbody>
-    </table>
 
-    <dialog id="bookDialog">
-      <form action=" " method="post" class="dialog">
-        <div class="form-dialog">
-            <label for="book-title">Book Title <span>*</span></Title>:</label>
-            <input type="text" id="book-title" name="title" placeholder="The hobbit" required/>
-            
-            <label for="book-author">Author <span>*</span></label>
-            <input type="text" id="book-author" name="author" placeholder="J.R.R Tolkien" required/>
-            
-            <label for="Pages-number">Number of pages <span>*</span></label>
-            <input type="number" id="Pages-number" name="pages" placeholder="The hobbit" required/>
-        </div>
-        
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <table class="tg">
+    <thead>
+      <tr>
+        <th class="tg-baqh">Title</th>
+        <th class="tg-0lax">author</th>
+        <th class="tg-0lax">Pages</th>
+        <th class="tg-0lax">Status</th>
+        <th class="tg-0lax">Delete</th>
+        <th class="tg-0lax">Change status</th>
+      </tr>
+    </thead>
+    <tbody id="book-table-body"></tbody>
+  </table>
+
+  <dialog id="bookDialog">
+    <form action=" " method="post" class="dialog">
+      <div class="form-dialog">
+        <label for="book-title">Book Title <span>*</span></Title>:</label>
+        <input type="text" id="book-title" name="title" placeholder="The hobbit" required />
+
+        <label for="book-author">Author <span>*</span></label>
+        <input type="text" id="book-author" name="author" placeholder="J.R.R Tolkien" required />
+
+        <label for="Pages-number">Number of pages <span>*</span></label>
+        <input type="number" id="pages-number" name="pages" required />
+
+
+        <label for="read-status">Read status<span>*</span></label>
         <div>
-            <button value="cancel" formmethod="dialog">Cancel</button>
-            <button  id="sumbit-btn">Submit</button>
+          <input type="radio" id="read" name="status" value="true" checked />
+          <label for="status">Read</label>
         </div>
-      </form>
-    </dialog>
+        <div>
+          <input type="radio" id="Unread" name="status" value="false" />
+          <label for="status">Unread</label>
+        </div>
+      </div>
 
-    <button type="button" class="new-book-btn">Add New Book</button>
-    <output></output>
-  </body>
+      <div>
+        <button value="cancel" formmethod="dialog" id="cancel-btn">Cancel</button>
+        <button id="sumbit-btn">Submit</button>
+      </div>
+    </form>
+  </dialog>
+
+  <button type="button" class="new-book-btn" id="new-book-btn">Add New Book</button>
+  <output></output>
   <script src="script.js"></script>
+</body>
+
 </html>
