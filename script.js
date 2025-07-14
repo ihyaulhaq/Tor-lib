@@ -1,24 +1,26 @@
 const myLibrary = [];
 
-function Book(title, author, pages, status) {
-  this.id = crypto.randomUUID();
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.status = status;
+class Book {
+  constructor(title, author, pages, status) {
+    this.id = crypto.randomUUID();
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.status = status;
+  }
+
+  info() {
+    return (
+      `${this.title} by ${this.author}, ${this.pages} pages, ` +
+      (this.status ? "readed" : "not read yet") +
+      this.id
+    );
+  }
+
+  changeStatus(){
+    this.status = !this.status;
+  }
 }
-
-Book.prototype.info = function () {
-  return (
-    `${this.title} by ${this.author}, ${this.pages} pages, ` +
-    (this.status ? "readed" : "not read yet") +
-    this.id
-  );
-};
-
-Book.prototype.changeStatus = function (id) {
-  this.status = !this.status;
-};
 
 function addBookToLibrary(title, author, pages, status) {
   const newBook = new Book(title, author, pages, status);
